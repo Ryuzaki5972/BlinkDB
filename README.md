@@ -53,7 +53,16 @@ BlinkDB is a high-performance, in-memory database system inspired by Redis that 
 
 ### Compilation
 ```bash
-g++ -std=c++17 -o blinkdb ABD.cpp -pthread
+g++ -std=c++17 -o blinkdb blinkDB.cpp -pthread
+```
+OR
+
+```bash
+# Building: Use the provided `Makefile` to build the project. In the terminal, run:
+make
+
+# Cleaning : To remove compiled files, use:
+make clean
 ```
 
 ### Running the Server
