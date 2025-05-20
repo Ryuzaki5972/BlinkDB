@@ -125,6 +125,46 @@ BlinkDB is built with a modular architecture:
 - **CommandHandler**: Parses and processes Redis-compatible commands
 - **Main**: Sets up the server socket and event loop
 
+                
+                                                 +---------------------+
+                                                 |        Main         |
+                                                 | (Server & Event Loop)|
+                                                 +----------+----------+
+                                                            |
+                                                            | initializes
+                                                            v
+                                +------------+    +--------------------+    +--------------+
+                                | BloomFilter|<-->|      BlinkDB       |<-->|  LRUCache    |
+                                | (Key Check)|    | (Database Engine)  |    |(Key Eviction)|
+                                +------------+    +--------+-----------+    +--------------+
+                                                           |
+                                                           | uses
+                                                           v
+                                                  +-------------------+
+                                                  |  CommandHandler   |
+                                                  | (Protocol Parser) |
+                                                  +--------+----------+
+                                                           |
+                                                           | operates on
+                                                           v
+                                                  +-------------------+
+                                                  |     DataType      |
+                                                  |  (Abstract Base)  |
+                                                  +-------------------+
+                                                           |
+                                                           | implemented by
+                                                           |
+                                                           v
+                                        +------------+------------+------------+
+                                        |            |            |            |            
+                                        v            v            v            v            
+                                 +-----------+ +-----------+ +-----------+ +-----------+
+                                 |StringType | | ListType  | | SetType   | | HashType  |
+                                 |           | |           | |           | |           |
+                                 +-----------+ +-----------+ +-----------+ +-----------+
+
+
+
 ## Performance Considerations
 
 - The database uses an LRU cache to manage memory usage, automatically evicting the least recently used keys when memory limits are reached.
